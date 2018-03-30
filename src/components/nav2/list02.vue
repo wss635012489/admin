@@ -1,9 +1,6 @@
 <template>
 	<div class="box">
-		page5
-		<transition name="fade" mode="out-in">
-			<router-view></router-view>
-		</transition>
+		list02
 	</div>
 </template>
 <style scoped>

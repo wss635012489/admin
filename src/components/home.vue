@@ -12,7 +12,7 @@
 			<el-col :span="10" class="userinfo">
 				<el-dropdown trigger="hover">
 				  <span class="el-dropdown-link userinfo-inner">
-				    <img src="../assets/user.png">
+				    <img :src="sysUserAvatar">
 				    {{sysUserName}}
 				  </span>
 				  <el-dropdown-menu slot="dropdown">
@@ -29,11 +29,13 @@
 					<template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
 						<el-submenu :index="index+''" v-if="!item.leaf">
 							<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
-							<el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
-					<!-- 		<el-submenu v-for="(childItem,childIndex) in item.children.children" :index="index+childIndex''">
-						      <span slot="title">选项4</span>
-						      <el-menu-item :index="childItem.path" :key="childItem.path">{{childItem.name}}</el-menu-item>
-						    </el-submenu> -->
+							<el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden&&!child.children">{{child.name}}</el-menu-item>
+							<template v-for="(child,count) in item.children" v-if="child.children">
+								<el-submenu :index="index+count+''">
+						          <template slot="title">{{child.name}}</template>
+						          <el-menu-item :index="itemChild.path" :key="itemChild.path" v-for="itemChild in child.children">{{itemChild.name}}</el-menu-item>
+						        </el-submenu>
+							</template>
 						</el-submenu>
 						<el-menu-item v-if="item.leaf&&item.children.length>0" :index="item.children[0].path"><i :class="item.iconCls"></i>{{item.children[0].name}}</el-menu-item>
 					</template>
@@ -48,7 +50,7 @@
 							</el-breadcrumb-item>
 						</el-breadcrumb>
 					</el-col>
-					<el-col :span="24">
+					<el-col :span="24" class="grid-content-main">
 						<transition name="fade" mode="out-in">
 							<router-view></router-view>
 						</transition>
@@ -63,11 +65,10 @@
 		data(){
 			return {
 				logo:'logo',
-				sysUserAvatar:'../assets/user.png',
-				sysUserName:'王双双',
+				sysUserAvatar:'',
+				sysUserName:'',
 			}
 		},
-
 		methods:{
 			unLogin:function(){
 				this.$confirm('确认退出吗？','提示',{
@@ -78,6 +79,14 @@
 				}).catch((err) => {
 					console.log('退出失败：' + err);
 				})
+			}
+		},
+		mounted:function(){
+			var user = sessionStorage.getItem('user');
+			if(user){
+				user = JSON.parse(user);
+				this.sysUserName = user.name;
+				this.sysUserAvatar = user.avatar;
 			}
 		}
 	}
@@ -132,6 +141,10 @@
 			flex: 1;
 			padding: 20px;
 			overflow-y: scroll; 
+			box-sizing: border-box;
+			.grid-content-main {
+				margin-top: 20px
+			}
 		}
 	}
 	

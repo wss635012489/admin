@@ -60,7 +60,7 @@
 	            			sessionStorage.removeItem('user');
 	            		}
 	            		sessionStorage.setItem('user',JSON.stringify(user));
-	            		this.$router.push({ path: '/home' });
+	            		this.$router.push({ path: '/table' });
 	            	}
 	            })
 	          } else {

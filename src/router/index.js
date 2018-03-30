@@ -9,6 +9,8 @@ import table from '@/components/nav1/table'
 import user from '@/components/nav1/user'
 import page4 from '@/components/nav2/page4'
 import page5 from '@/components/nav2/page5'
+import list01 from '@/components/nav2/list'
+import list02 from '@/components/nav2/list02'
 import page6 from '@/components/nav3/page6'
 
 Vue.use(Router)
@@ -39,10 +41,11 @@ export default new Router({
         name: '导航二',
         iconCls: 'el-icon-setting',
         children: [
-            { path: '/page4', component: page4, name: '页面4' },
-            { path: '/page5', component: page5, name: '页面5',
+            { path: '/page4', component: page4, name: '页面4'},
+            { path: '/page5', name: '页面5',component: page5,
              children: [
-              { path: '/user', component: user, name: '列表' },
+              { path: '/page5/list01', component: list01, name: '列表一' },
+              { path: '/page5/list02', component: list02, name: '列表二' },
             ] 
           }
         ]
